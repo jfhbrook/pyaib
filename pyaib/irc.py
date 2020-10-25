@@ -301,6 +301,9 @@ class Message (object):
     def get_parser(cls, kind):
         return cls._parsers.get(kind)
 
+    def copy(self, irc_c):
+        return type(self)(irc_c, self.raw)
+
     def __init__(self, irc_c, raw):
         self.raw = raw
         match = Message.MSG_REGEX.search(raw)
@@ -373,6 +376,7 @@ class Message (object):
 Message.add_parser('PRIVMSG', Message._directed_message)
 Message.add_parser('NOTICE', Message._directed_message)
 Message.add_parser('INVITE', Message._directed_message)
+Message.add_parser('TOPIC', Message._directed_message)
 
 
 class Sender(str):

@@ -85,7 +85,7 @@ class SqliteDriver(object):
         row = c.fetchone()
         if row:
             k, v = row
-            return (k, dejsonify(decompress(v)))
+            return (k, dejsonify(decompress(v).decode('utf-8')))
         else:
             return key, None
 
@@ -120,7 +120,7 @@ class SqliteDriver(object):
             return
         for k, v in self.conn.execute("SELECT key, value from `{}`"
                                       .format(hash(bucket))):
-            yield (k, dejsonify(decompress(v)))
+            yield (k, dejsonify(decompress(v).decode('utf-8')))
 
     def deleteObject(self, key, bucket, commit=True):
         if self._bucket_exists(bucket):
